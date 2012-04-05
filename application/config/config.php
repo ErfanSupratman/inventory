@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://10.151.36.36/inventory';
+$config['base_url']	= '';
 
 /*
 |--------------------------------------------------------------------------

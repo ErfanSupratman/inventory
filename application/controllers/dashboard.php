@@ -57,7 +57,7 @@ class Dashboard extends CI_Controller /* Konsruktor*/
   function tambahbarang()
   {
       $this->m_gudang->addBarang();
-      $command = escapeshellcmd('C:/xampp/htdocs/inventory/assets/data/pin_word_sd.py');
+      $command = escapeshellcmd('sudo python /var/www/html/inventory/assets/data/pin_word_sd.py');
       $output = shell_exec($command);
       echo $command;
       redirect('dashboard');
@@ -77,8 +77,8 @@ class Dashboard extends CI_Controller /* Konsruktor*/
 
   function editbarang($id){
     $this->m_gudang->editBarang($id);
-    unlink('C:/xampp/htdocs/inventory/assets/data/'.$id.'.doc');
-    $command = escapeshellcmd('C:/xampp/htdocs/inventory/assets/data/pin_word_sd.py');
+    unlink('/var/www/html/inventory/assets/data/'.$id.'.doc');
+    $command = escapeshellcmd('sudo python /var/www/html/inventory/assets/data/pin_word_sd.py');
     $output = shell_exec($command);
     echo $command;
     redirect('dashboard');
@@ -86,7 +86,7 @@ class Dashboard extends CI_Controller /* Konsruktor*/
   function deletebarang($id)
   {
     $this->m_gudang->hapusBarang($id);
-    unlink('C:/xampp/htdocs/inventory/assets/data/'.$id.'.doc');
+    unlink('/var/www/html/inventory/assets/data/'.$id.'.doc');
     //echo 'D:/BARBARIKA/xampp/htdocs/inventory/assets/data/'.$id.'.docx';
     redirect('dashboard');
   }

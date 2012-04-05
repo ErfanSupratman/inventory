@@ -1,14 +1,16 @@
+#!/usr/bin/env python
+
 from mailmerge import MailMerge
 import time
 import MySQLdb
 
 print "running"
 start = time.time()
-path = 'C:/xampp/htdocs/inventory/assets/data/'
+path = '/var/www/html/inventory/assets/data/'
 
 db = MySQLdb.connect(host="127.0.0.1",
-                     user="root",
-                      passwd="",
+                     user="inventory",
+                      passwd="inventory123!",
                       db="inventory")
 cur = db.cursor()
 get_barang = "select idbarang from barang;"
