@@ -135,7 +135,7 @@ public function merk(){
     redirect('dashboard');
 }
 
-
+/*-----------------USER------------------------------------------------------*/
 
 public function user(){
 			 $data['user_list'] = $this->m_gudang->loadUser(); 
@@ -167,100 +167,9 @@ public function user(){
   public function deleteuser($id = null){
   $this->m_gudang->hapusUser($id);
   redirect('dashboard/user');
-}
-
-public function createrepport()
-{
-  $datestring = "%d/%m/%Y - %h:%i %A";
-  $waktu = mdate($datestring);
-  //$site = trim($this->input->post('siteid'));
-  //$dateone = trim($this->input->post('start'));
-  //$datetwo = trim($this->input->post('endingdate'));
-  //$hasil = $this->m_admin->getReport($dateone,$datetwo);
-  $hasil = $this->m_admin->getReport();
-      //print_r($hasil);
-//exit();
-      require_once APPPATH.'libraries/PHPExcel.php';
-      $excel = new PHPExcel();
-      
-      /*Start PageStyle*/
-      $fontBig = array('size' => '16', 'bold' => true, 'name'=>'Calibri');
-      $fontBold = array('size' => '11', 'bold' => true, 'name'=>'Calibri');
-      $fontData = array('size' => '10', 'bold' => true, 'name'=>'Arial');
-
-      $titleStyle = array(
-        'alignment' => array(
-            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-        )
-    );
-
-      $border = $styleArray = array(
-        'borders' => array(
-          'allborders' => array(
-            'style' => PHPExcel_Style_Border::BORDER_THIN
-          )
-        )
-      );
-      /*End Page Style*/
-      
-      $excel->setActiveSheetIndex(0);
-      $excel->setActiveSheetIndex(0)->mergeCells('C1:I2');
-      $excel->setActiveSheetIndex(0)->mergeCells('A1:B1');
-      $excel->setActiveSheetIndex(0)->mergeCells('J1:K1');
-      $sheet = $excel->getActiveSheet();
-      $sheet->getStyle()->getNumberFormat()->setFormatCode('@');
-      $sheet->setTitle('REPORT Troubleshoot');
-
-      $colsname = array('No' => 'A', 'Date Opened' => 'B', 'Time Opened' => 'C', 'Analyst' => 'D', 'Status' => 'E', 'Customer' => 'F', 'Details' => 'G', 'Category' => 'H', 'Resolution' => 'I' , 'Time Closed' => 'J', 'Date Closed' => 'K' );
-
-      $endcol = 'K';
-      $sheet->setCellValue('C1', 'IPS ACTIVITY LOG WEEKLY');
-      $sheet->setCellValue('A1', 'LOGO');
-      $sheet->setCellValue('J1', 'NOMOR');
-      
-      $sheet->getStyle('C1:I2')->getFont()->applyFromArray($fontBig);
-      $sheet->getStyle('A1')->getFont()->applyFromArray($fontBig);
-      $sheet->getStyle('A2:A3')->getFont()->applyFromArray($fontBold);
-      $sheet->getStyle("C1:I2")->applyFromArray($titleStyle);
-
-      foreach ($colsname as $key => $value){
-        $sheet->getColumnDimension($value)->setAutoSize(true);
-        $sheet->getRowDimension($value)->setRowHeight(100);
-        $sheet->setCellValue($value.'5', $key);
-      }
-      $sheet->getStyle('A5:'.$endcol.'5')->getFont()->applyFromArray($fontBold);
-      $sheet->getStyle('A5:'.$endcol.'5')->applyFromArray($titleStyle);
-
-      $row = 5;
-      if (isset($hasil)) {
-        foreach ($hasil as $r) {
-          $row++;
-          $sheet->setCellValue('A'.$row, ($row-5));
-          $sheet->getCell('B'.$row)->setValueExplicit($r['caseDateOpened'], PHPExcel_Cell_DataType::TYPE_STRING);
-          $sheet->setCellValue('C'.$row, $r['caseTimeOpened']);
-          $sheet->setCellValue('D'.$row, $r['caseAnalyst']);
-          $sheet->setCellValue('E'.$row, $r['caseStatusCategory']);
-          $sheet->setCellValue('F'.$row, $r['clientSiteName']);
-          $sheet->setCellValue('G'.$row, $r['caseDetail']);
-          $sheet->setCellValue('H'.$row, $r['categoryName']);
-          $sheet->setCellValue('I'.$row, $r['caseResolution']);
-          $sheet->setCellValue('J'.$row, $r['caseTimeClosed']);
-          $sheet->setCellValue('K'.$row, $r['caseDateClosed']);
-        }
-        $sheet->getStyle('A5:'.$endcol.$row)->applyFromArray($border);
-      }
-      
-      $writer = new PHPExcel_Writer_Excel5($excel);
-      header('Content-type: application/vnd.ms-excel');
-      $waktu = str_replace('/', '_', $waktu);
-      $filename = 'IPS_LOGBOOK_'.$waktu.'.xls';
-      header("Content-Disposition: attachment; filename=\"".$filename."\"");
-      $writer->save('php://output'); 
-      $excel->disconnectWorksheets();
-      unset($excel);
-
-    }
+  }
 
 }
+
 
 ?>

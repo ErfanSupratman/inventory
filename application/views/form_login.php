@@ -4,15 +4,6 @@
         <div class="col-md-6 col-md-offset-1">
           <h2>Inventory <b>IF</b> -ITS</h2>
           <p><b>Sistem Informasi Inventaris Barang</b> Informatika ITS<br><br><br>
-          <!--<b>Phone :</b> 021. 255 25100 | <b>Email : </b><a href="mailto:helpdesk@scbd.net.id">helpdesk@scbd.net.id</a>
-      </p>
-      <p><b>Sudirman Central Business District | 18 Parc Tower A, 4th Floor</b><br>
-      Jl. Jenderal Sudirman Kav. 52-53 | Jakarta Selatan 12190 | Indonesia</p>
-          <br>
-       <!--<button class="btn btn-block btn-success col-md-8" type="button" data-toggle="modal" data-target="#myModal">
-            <span class="pull-left"><i class="icon-twitter"></i></span>
-            <span class="bold">Register <i>SCBD</i>net Account</span>
-        </button>-->
         </div>
         <div class="col-md-5 "> <br>
      
