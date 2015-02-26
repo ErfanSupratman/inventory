@@ -34,8 +34,10 @@
                                                         <th class="text-center" style="width:3%">Jumlah</th>
                                                         <th class="text-center" style="width:5%">Harga</th>
                                                         <th class="text-center" style="width:5%">Tanggal Masuk</th>
+                                                        <th class="text-center" style="width:5%">Tanggal SPJ</th>
                                                         <th class="text-center" style="width:3%">Kondisi</th>
                                                         <th class="text-center" style="width:5%">Merk</th>
+                                                        <th class="text-center" style="width:5%">Type</th>
                                                         <th class="text-center" style="width:5%">Sumber Dana</th>
                                                         <th class="text-center" style="width:5%">Lokasi</th>
                                                         <th class="text-center" style="width:5%">Opt.</th>
@@ -54,11 +56,13 @@
                                               <td class="text-center"><?php echo $ca->JUMLAHBARANG?></td>
                                               <td class="text-center"><?php echo $ca->HARGABARANG?></td>
                                               <td class="text-center"><?php echo $ca->TANGGALMASUK?></td>
+                                              <td class="text-center"><?php echo $ca->TANGGALSPJ?></td>
                                               <td class="text-center"><?php echo $ca->NAMAKONDISI?></td>
-                                              <td class="text-center"><?php echo $ca->NAMAMERK?></td>
+                                              <td class="text-center"><?php echo $ca->MERKBARANG?></td>
+                                              <td class="text-center"><?php echo $ca->TIPEBARANG?></td>
                                               <td class="text-center"><?php echo $ca->NAMASUMBER?></td>
                                               <td class="text-center"><?php echo $ca->NAMALOKASI?></td>
-                                              <td><a href="<?php echo base_url().'assets/data/'.$ca->IDBARANG.'.docx';?>">Download</a> | <a href="<?php echo site_url('dashboard/deletebarang').'/'.$ca->IDBARANG;?>">Delete</a></td> 
+                                              <td><a href="<?php echo base_url().'assets/data/'.$ca->IDBARANG.'.doc';?>">Download</a> | <a href="<?php echo site_url('dashboard/deletebarang').'/'.$ca->IDBARANG;?>">Delete</a></td> 
                                             </tr>
                                            <?php $no++;}}?>
                                                 </tbody>
@@ -107,6 +111,13 @@
                           <input id="tgl" type="text" class="form-control" name="tanggalmasuk">
                             <span class="add-on"><span class="arrow"></span><i class="fa fa-th"></i></span> 
                         </div></div>
+                              
+                              <div class="col-md-6">
+                        <label>Tanggal SPJ:</label>
+                        <div class="input-append success date col-md-12 col-lg-8 no-padding">
+                          <input id="tgl1" type="text" class="form-control" name="tanggalspj">
+                            <span class="add-on"><span class="arrow"></span><i class="fa fa-th"></i></span> 
+                        </div></div>
 
                             <div class="col-md-6">
                               <select id="lokasibarang" style="width:100%" name="lokasibarang">
@@ -124,16 +135,25 @@
                                 <?php }?>
                               </select>
                             </div>
-                            <div class="col-md-6">
+                            <!--<div class="col-md-6">
                             <label>Merk:</label>
                               <select id="namamerk" style="width:100%" name="namamerk">
                                 <?php
-                                    foreach($merk as $mer){ ?>
-                                    <option value="<?php echo $mer->IDMERK?>"><?php echo $mer->NAMAMERK?></option>
-                                <?php }?>
+                                    //foreach($merk as $mer){ ?>
+                                    <option value="<?php //echo $mer->IDMERK?>"><?php //echo $mer->NAMAMERK?></option>
+                                <?php //}?>
                               </select>
-                            </div>
+                            </div>-->
+                            
                             <div class="col-md-6">
+                                <input type="text" class="form-control col-md-12" placeholder="Merk" name="namamerk">
+                                </div>
+                              
+                              <div class="col-md-6">
+                                <input type="text" class="form-control col-md-12" placeholder="Tipe Barang" name="tipebarang">
+                                </div>
+                              
+                            <div class="col-md-3">
                             <label>Sumber Dana:</label>
                             <select id="namasumber" style="width:100%" name="namasumber">
                                 <?php

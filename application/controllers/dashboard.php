@@ -58,7 +58,7 @@ function index($id=NULL){
 
   function tambahbarang(){
     $this->m_gudang->addBarang();
-    $command = escapeshellcmd('D:/BARBARIKA/xampp/htdocs/inventory/assets/data/pin_word_sd.py');
+    $command = escapeshellcmd('C:/xampp/htdocs/inventory/assets/data/pin_word_sd.py');
     $output = shell_exec($command);
     echo $command;
     redirect('dashboard');
@@ -66,7 +66,7 @@ function index($id=NULL){
 
   function deletebarang($id){
     $this->m_gudang->hapusBarang($id);
-    unlink('D:/BARBARIKA/xampp/htdocs/inventory/assets/data/'.$id.'.docx');
+    unlink('C:/xampp/htdocs/inventory/assets/data/'.$id.'.doc');
     //echo 'D:/BARBARIKA/xampp/htdocs/inventory/assets/data/'.$id.'.docx';
     redirect('dashboard');
   }
@@ -132,25 +132,41 @@ public function merk(){
 
 
   function download($id){
-
     redirect('dashboard');
 }
 
 
 
+public function user(){
+			 $data['user_list'] = $this->m_gudang->loadUser(); 
+			 $this->load->view('css/header');
+             $this->load->view('dashboard/topnav');
+             $this->load->view('dashboard/adminmenu');
+             $this->load->view('dashboard/userlist',$data);
+             $this->load->view('css/js');
+             $this->load->view('css/footer');
+           }
+		   
+		   
+	function tambahuser(){
+	$this->m_gudang->addUser();
+	redirect('dashboard/user');
+	}
+
+
+
   public function check_username_availablity(){
-      $this->load->model('m_admin');
-      $get_result = $this->m_admin->check_username_availablity();
+      $get_result = $this->m_gudang->check_username_availablity();
   
         if(!$get_result )
-            echo '<span style="color:#f00">Username already in use. </span>';
+            echo '<span style="color:#f00">Username already in use.</span>';
         else
             echo '<span style="color:#00c">Username Available</span>';
     }
 
   public function deleteuser($id = null){
-  $this->m_admin->deleteUser($id);
-  redirect('admin/user');
+  $this->m_gudang->hapusUser($id);
+  redirect('dashboard/user');
 }
 
 public function createrepport()

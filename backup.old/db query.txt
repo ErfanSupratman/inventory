@@ -1,0 +1,8 @@
+LIST BARANG
+
+SELECT barang.`NAMABARANG`, barang.`KODEBARANG`, barang.`JUMLAHBARANG`, barang.`HARGABARANG`,barang.`TANGGALMASUK`, kondisi.`NAMAKONDISI`, merk.`NAMAMERK`, sumber.`NAMASUMBER`, lokasi.`NAMALOKASI` 
+       FROM barang INNER JOIN kondisi ON kondisi.`IDKONDISI` = barang.`IDKONDISI`
+       INNER JOIN merk ON merk.`IDMERK` = barang.`IDMERK` 
+       INNER JOIN sumber ON sumber.`IDSUMBER` = barang.`IDSUMBER`
+       INNER JOIN lokasi ON lokasi.`IDLOKASI` = barang.`IDLOKASI`
+WHERE barang.`IDBARANG`= 1 GROUP BY barang.`IDBARANG`

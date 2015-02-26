@@ -10,9 +10,8 @@ class M_gudang extends CI_Model
   	}
 
   function listBarang(){
-  		$query=$this->db->query( " SELECT barang.`NAMABARANG`, barang.`KODEBARANG`, barang.`JUMLAHBARANG`, barang.`HARGABARANG`,barang.`TANGGALMASUK`, kondisi.`NAMAKONDISI`, merk.`NAMAMERK`, sumber.`NAMASUMBER`, lokasi.`NAMALOKASI`, barang.`IDBARANG`
-       		FROM barang INNER JOIN kondisi ON kondisi.`IDKONDISI` = barang.`IDKONDISI`
-       		INNER JOIN merk ON merk.`IDMERK` = barang.`IDMERK` 
+  		$query=$this->db->query( "SELECT barang.`NAMABARANG`, barang.`TANGGALSPJ`, barang.`TIPEBARANG`, barang.`MERKBARANG`, barang.`KODEBARANG`, barang.`JUMLAHBARANG`, barang.`HARGABARANG`,barang.`TANGGALMASUK`, kondisi.`NAMAKONDISI`, sumber.`NAMASUMBER`, lokasi.`NAMALOKASI`, barang.`IDBARANG`
+       		FROM barang INNER JOIN kondisi ON kondisi.`IDKONDISI` = barang.`IDKONDISI` 
        		INNER JOIN sumber ON sumber.`IDSUMBER` = barang.`IDSUMBER`
        		INNER JOIN lokasi ON lokasi.`IDLOKASI` = barang.`IDLOKASI`
 			GROUP BY barang.`IDBARANG`");
@@ -27,12 +26,15 @@ class M_gudang extends CI_Model
 		$barangharga = $_POST['hargabarang'];
 		$datein = $_POST['tanggalmasuk'];
 		$newdatein = date('Y-m-d', strtotime($datein));
+                $datespj = $_POST['tanggalspj'];
+                $newdatespj = date('Y-m-d', strtotime($datespj));
 		$location = $_POST['lokasibarang'];
 		$condition = $_POST['kondisibarang'];
 		$brand = $_POST['namamerk'];
+                $type = $_POST['tipebarang'];
 		$pay = $_POST['namasumber'];
 
-		$query = $this->db->query("INSERT INTO barang (IDKONDISI, IDMERK, IDSUMBER, IDLOKASI, KODEBARANG, NAMABARANG, JUMLAHBARANG, HARGABARANG, TANGGALMASUK) VALUES ('$condition','$brand','$pay','$location','$barangcode','$barangname','$barangjumlah','$barangharga','$newdatein')");
+		$query = $this->db->query("INSERT INTO barang (IDKONDISI, MERKBARANG, IDSUMBER, IDLOKASI, KODEBARANG, NAMABARANG, JUMLAHBARANG, HARGABARANG, TANGGALMASUK, TANGGALSPJ, TIPEBARANG) VALUES ('$condition','$brand','$pay','$location','$barangcode','$barangname','$barangjumlah','$barangharga','$newdatein','$newdatespj','$type')");
 		return $query;
   	}
 
@@ -101,6 +103,36 @@ class M_gudang extends CI_Model
 		$query=$this->db->query("SELECT * FROM kondisi");
 		return $query->result();
 	}
+	
+	function addUser(){
+	$password = md5($_POST['pwd']);
+	$usernama = $_POST['username'];
+	
+	$query=$this->db->query("INSERT INTO users (NAMAUSER, PASSUSER)
+								VALUES ('$usernama','$password');");
+		
+		return $query;
+	}
+	
+	function loadUser(){
+	$query=$this->db->query("SELECT * FROM users");
+	return $query->result();
+	}
+	
+	function hapusUser($id){
+  		$this->db->query("DELETE FROM users WHERE idusers = $id");
+  	}
+	
+	
+	public function check_username_availablity(){
+        $username = trim($this->input->post('username'));
+		$username = strtolower($username);	
+	
+		$query = $this->db->query("SELECT * FROM users WHERE NAMAUSER='$username'");
+		if($query->num_rows() > 1)
+			return false;
+		else
+			return true;}
 	/*function deleteSumber($id){
 		$this->db->delete("sumber",array('IDSUMBER'=>$id));
 	}*/

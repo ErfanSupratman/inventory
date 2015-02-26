@@ -4,7 +4,7 @@ import MySQLdb
 
 print "running"
 start = time.time()
-path = 'D:/BARBARIKA/xampp/htdocs/inventory/assets/data/'
+path = 'C:/xampp/htdocs/inventory/assets/data/'
 
 db = MySQLdb.connect(host="127.0.0.1",
                      user="root",
@@ -21,17 +21,18 @@ for idbarang in daftar_barang:
 	#nama_file		= nama_file.replace("/", "")
 	#nama_lokasi	= db.escape_string(nama_lokasi)
 	sql = '''
-		SELECT barang.`NAMABARANG`, barang.`KODEBARANG`, barang.`JUMLAHBARANG`, barang.`HARGABARANG`,barang.`TANGGALMASUK`, kondisi.`NAMAKONDISI`, merk.`NAMAMERK`, sumber.`NAMASUMBER`, lokasi.`NAMALOKASI` 
-		FROM barang INNER JOIN kondisi ON kondisi.`IDKONDISI` = barang.`IDKONDISI`
-		INNER JOIN merk ON merk.`IDMERK` = barang.`IDMERK` 
+		SELECT barang.`NAMABARANG`, barang.`KODEBARANG`, barang.`JUMLAHBARANG`, barang.`HARGABARANG`,barang.`TANGGALMASUK`, barang.`MERKBARANG`, kondisi.`NAMAKONDISI`, sumber.`NAMASUMBER`, lokasi.`NAMALOKASI` 
+		FROM barang INNER JOIN kondisi ON kondisi.`IDKONDISI` = barang.`IDKONDISI` 
 		INNER JOIN sumber ON sumber.`IDSUMBER` = barang.`IDSUMBER` 
 		INNER JOIN lokasi ON lokasi.`IDLOKASI` = barang.`IDLOKASI` WHERE barang.IDBARANG =''' + str(nama_barang) +  " GROUP BY barang.`IDBARANG`"
 	#print sql
 	cur.execute(sql)
 
 	data = []
-	document = MailMerge(path+'LabelSDMI1.docx')
+	document = MailMerge(path+'LabelSDMI.docx')
+	print document
 	for row in cur.fetchall():
+		print "execute"
 		i = row[2]
 		for x in range(i):
 			temp = {}
@@ -44,7 +45,7 @@ for idbarang in daftar_barang:
 			data.append(temp)
 
 	document.merge_rows('no_barang', data)
-	document.write(path+nama_file + '.docx')
+	document.write(path+nama_file + '.doc')
 
 cur.close()
 db.close()
