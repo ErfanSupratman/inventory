@@ -83,7 +83,10 @@ class M_gudang extends CI_Model
 		$lokasicode = $_POST['kodelokasi'];
 		$lokasiname = $_POST['namalokasi'];
 		$lokasifloor = $_POST['lantai'];
-		$query = $this->db->query("INSERT INTO lokasi (KODELOKASI, NAMALOKASI, LANTAILOKASI) VALUES ('$lokasicode', '$lokasiname', '$lokasifloor')");
+		$PJ = $_POST['PJ'];
+		$NIP_PJ = $_POST['NIP_PJ'];
+		$query = $this->db->query("INSERT INTO lokasi (KODELOKASI, NAMALOKASI, LANTAILOKASI, PJ, NIP_PJ) 
+			VALUES ('$lokasicode', '$lokasiname', '$lokasifloor', '$PJ', '$NIP_PJ')");
 
 	}
 
@@ -122,7 +125,44 @@ class M_gudang extends CI_Model
 	function hapusUser($id){
   		$this->db->query("DELETE FROM users WHERE idusers = $id");
   	}
+
+  	function get_barang_by_tempat($id_tempat)
+  	{
+  		$retval = $this->db->query("select 
+					b.NAMABARANG, 
+					b.KODEBARANG,
+					b.TIPEBARANG,
+					extract(year from b.TANGGALMASUK) `TAHUN`,
+					b.JUMLAHBARANG,
+					b.HARGABARANG,
+					b.IDKONDISI,
+					b.MERKBARANG
+				from barang b
+				where idlokasi = $id_tempat"
+			);
+  		return $retval->result();
+  	}
+
+  	function get_all_ruangan()
+	{
+		$retval = $this->db->query("
+				select * from lokasi
+			");
+		return $retval->result();
+	}
 	
+	function get_ruangan($id_tempat = 1)
+	{
+		$retval = $this->db->query("
+				select * from lokasi where IDLOKASI= $id_tempat
+			");
+		if($retval->num_rows == 0)
+		{
+			$retval = array((object)array('KODELOKASI'=>"-","NAMALOKASI"=>"-", "PJ"=>'-', "NIP_PJ"=>"-"));
+			return $retval;
+		}
+		return $retval->result();
+	}
 	
 	public function check_username_availablity(){
         $username = trim($this->input->post('username'));

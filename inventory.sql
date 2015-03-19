@@ -1,31 +1,21 @@
--- phpMyAdmin SQL Dump
--- version 3.5.2.2
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Jan 29, 2015 at 10:04 AM
--- Server version: 5.5.27
--- PHP Version: 5.4.7
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `inventory`
---
-
+-- --------------------------------------------------------
+-- Host:                         localhost
+-- Server version:               5.6.14 - MySQL Community Server (GPL)
+-- Server OS:                    Win32
+-- HeidiSQL Version:             9.1.0.4867
 -- --------------------------------------------------------
 
---
--- Table structure for table `barang`
---
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- Dumping database structure for inventory
+CREATE DATABASE IF NOT EXISTS `inventory` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `inventory`;
+
+
+-- Dumping structure for table inventory.barang
 CREATE TABLE IF NOT EXISTS `barang` (
   `IDBARANG` int(11) NOT NULL AUTO_INCREMENT,
   `IDKONDISI` int(11) DEFAULT NULL,
@@ -37,136 +27,108 @@ CREATE TABLE IF NOT EXISTS `barang` (
   `JUMLAHBARANG` int(11) NOT NULL,
   `HARGABARANG` int(11) NOT NULL,
   `TANGGALMASUK` date NOT NULL,
+  `TANGGALSPJ` date NOT NULL,
+  `TIPEBARANG` varchar(128) DEFAULT NULL,
+  `MERKBARANG` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`IDBARANG`),
   KEY `FK_ASAL` (`IDSUMBER`),
   KEY `FK_BERADA_PADA` (`IDLOKASI`),
   KEY `fk_IDKONDISI_kondisi_IDKONDISI` (`IDKONDISI`),
-  KEY `fk_IDMERK_merk_IDMERK` (`IDMERK`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  KEY `fk_IDMERK_merk_IDMERK` (`IDMERK`),
+  CONSTRAINT `FK_ASAL` FOREIGN KEY (`IDSUMBER`) REFERENCES `sumber` (`IDSUMBER`),
+  CONSTRAINT `FK_BERADA_PADA` FOREIGN KEY (`IDLOKASI`) REFERENCES `lokasi` (`IDLOKASI`),
+  CONSTRAINT `fk_IDKONDISI_kondisi_IDKONDISI` FOREIGN KEY (`IDKONDISI`) REFERENCES `kondisi` (`IDKONDISI`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `fk_IDMERK_merk_IDMERK` FOREIGN KEY (`IDMERK`) REFERENCES `merk` (`IDMERK`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `barang`
---
+-- Dumping data for table inventory.barang: ~2 rows (approximately)
+/*!40000 ALTER TABLE `barang` DISABLE KEYS */;
+REPLACE INTO `barang` (`IDBARANG`, `IDKONDISI`, `IDMERK`, `IDSUMBER`, `IDLOKASI`, `KODEBARANG`, `NAMABARANG`, `JUMLAHBARANG`, `HARGABARANG`, `TANGGALMASUK`, `TANGGALSPJ`, `TIPEBARANG`, `MERKBARANG`) VALUES
+	(12, 1, NULL, 2, 1, '2.2.2002.2.3', 'Kursi', 100, 500000, '2015-03-16', '2015-03-16', 'barang', 'Chitose'),
+	(13, 1, NULL, 2, 1, '2.2.2002.2.2', 'PC', 10, 1500000, '2015-03-16', '2015-03-16', 'Lenovo', 'Lenovo');
+/*!40000 ALTER TABLE `barang` ENABLE KEYS */;
 
-INSERT INTO `barang` (`IDBARANG`, `IDKONDISI`, `IDMERK`, `IDSUMBER`, `IDLOKASI`, `KODEBARANG`, `NAMABARANG`, `JUMLAHBARANG`, `HARGABARANG`, `TANGGALMASUK`) VALUES
-(1, 1, 1, 1, 1, '3.10.01.02.001', 'Komputer PC', 40, 3000000, '2015-01-28');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `kondisi`
---
-
+-- Dumping structure for table inventory.kondisi
 CREATE TABLE IF NOT EXISTS `kondisi` (
   `IDKONDISI` int(11) NOT NULL AUTO_INCREMENT,
   `KODEKONDISI` varchar(10) NOT NULL,
   `NAMAKONDISI` varchar(1024) NOT NULL,
   PRIMARY KEY (`IDKONDISI`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `kondisi`
---
+-- Dumping data for table inventory.kondisi: ~3 rows (approximately)
+/*!40000 ALTER TABLE `kondisi` DISABLE KEYS */;
+REPLACE INTO `kondisi` (`IDKONDISI`, `KODEKONDISI`, `NAMAKONDISI`) VALUES
+	(1, 'B', 'Baik'),
+	(2, 'RR', 'Rusak Ringan'),
+	(3, 'RB', 'Rusak Berat');
+/*!40000 ALTER TABLE `kondisi` ENABLE KEYS */;
 
-INSERT INTO `kondisi` (`IDKONDISI`, `KODEKONDISI`, `NAMAKONDISI`) VALUES
-(1, 'B', 'Baik'),
-(2, 'RR', 'Rusak Ringan'),
-(3, 'RB', 'Rusak Berat');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `lokasi`
---
-
+-- Dumping structure for table inventory.lokasi
 CREATE TABLE IF NOT EXISTS `lokasi` (
   `IDLOKASI` int(11) NOT NULL AUTO_INCREMENT,
   `KODELOKASI` varchar(10) NOT NULL,
   `NAMALOKASI` varchar(256) NOT NULL,
   `LANTAILOKASI` int(11) NOT NULL,
+  `PJ` varchar(50) NOT NULL,
+  `NIP_PJ` varchar(50) NOT NULL,
   PRIMARY KEY (`IDLOKASI`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `lokasi`
---
+-- Dumping data for table inventory.lokasi: ~1 rows (approximately)
+/*!40000 ALTER TABLE `lokasi` DISABLE KEYS */;
+REPLACE INTO `lokasi` (`IDLOKASI`, `KODELOKASI`, `NAMALOKASI`, `LANTAILOKASI`, `PJ`, `NIP_PJ`) VALUES
+	(1, 'IF312', 'Laboratorium Alpro', 3, 'Ir. Fx. Arunanto, M.Sc.', '19570101 1983 1 004');
+/*!40000 ALTER TABLE `lokasi` ENABLE KEYS */;
 
-INSERT INTO `lokasi` (`IDLOKASI`, `KODELOKASI`, `NAMALOKASI`, `LANTAILOKASI`) VALUES
-(1, 'IF307', 'Laboratorium AJK', 3);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `merk`
---
-
+-- Dumping structure for table inventory.merk
 CREATE TABLE IF NOT EXISTS `merk` (
   `IDMERK` int(11) NOT NULL AUTO_INCREMENT,
   `NAMAMERK` varchar(256) NOT NULL,
   PRIMARY KEY (`IDMERK`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `merk`
---
+-- Dumping data for table inventory.merk: ~0 rows (approximately)
+/*!40000 ALTER TABLE `merk` DISABLE KEYS */;
+REPLACE INTO `merk` (`IDMERK`, `NAMAMERK`) VALUES
+	(1, 'Acer');
+/*!40000 ALTER TABLE `merk` ENABLE KEYS */;
 
-INSERT INTO `merk` (`IDMERK`, `NAMAMERK`) VALUES
-(1, 'Acer');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `sumber`
---
-
+-- Dumping structure for table inventory.sumber
 CREATE TABLE IF NOT EXISTS `sumber` (
   `IDSUMBER` int(11) NOT NULL AUTO_INCREMENT,
   `KODESUMBER` varchar(10) NOT NULL,
   `NAMASUMBER` varchar(256) NOT NULL,
   PRIMARY KEY (`IDSUMBER`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `sumber`
---
+-- Dumping data for table inventory.sumber: ~4 rows (approximately)
+/*!40000 ALTER TABLE `sumber` DISABLE KEYS */;
+REPLACE INTO `sumber` (`IDSUMBER`, `KODESUMBER`, `NAMASUMBER`) VALUES
+	(2, 'BLU S1', 'BLU S1'),
+	(3, 'BLU S2', 'BLU S2'),
+	(4, 'BLU S3', 'BLU S3'),
+	(5, 'HIBAH', 'HIBAH');
+/*!40000 ALTER TABLE `sumber` ENABLE KEYS */;
 
-INSERT INTO `sumber` (`IDSUMBER`, `KODESUMBER`, `NAMASUMBER`) VALUES
-(1, 'EXT', 'Ekstensi');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
+-- Dumping structure for table inventory.users
 CREATE TABLE IF NOT EXISTS `users` (
   `IDUSERS` int(11) NOT NULL AUTO_INCREMENT,
   `NAMAUSER` varchar(128) NOT NULL,
   `PASSUSER` varchar(256) NOT NULL,
   PRIMARY KEY (`IDUSERS`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`IDUSERS`, `NAMAUSER`, `PASSUSER`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3'),
-(2, 'jumali', '6716faae96ea7e1a17bce13e44d4e112');
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `barang`
---
-ALTER TABLE `barang`
-  ADD CONSTRAINT `FK_ASAL` FOREIGN KEY (`IDSUMBER`) REFERENCES `sumber` (`IDSUMBER`),
-  ADD CONSTRAINT `FK_BERADA_PADA` FOREIGN KEY (`IDLOKASI`) REFERENCES `lokasi` (`IDLOKASI`),
-  ADD CONSTRAINT `fk_IDKONDISI_kondisi_IDKONDISI` FOREIGN KEY (`IDKONDISI`) REFERENCES `kondisi` (`IDKONDISI`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_IDMERK_merk_IDMERK` FOREIGN KEY (`IDMERK`) REFERENCES `merk` (`IDMERK`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
+-- Dumping data for table inventory.users: ~0 rows (approximately)
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+REPLACE INTO `users` (`IDUSERS`, `NAMAUSER`, `PASSUSER`) VALUES
+	(1, 'admin', '21232f297a57a5a743894a0e4a801fc3');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

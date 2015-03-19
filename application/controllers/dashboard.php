@@ -7,57 +7,58 @@ class Dashboard extends CI_Controller /* Konsruktor*/
     parent::__construct();
       $this->load->database();
       $this->load->model(array('m_login','m_gudang'));
-
+      require_once(realpath(APPPATH."third_party/dompdf")."/dompdf_config.inc.php");
+      spl_autoload_register('DOMPDF_autoload');
       if($this->session->userdata('isLogin') == FALSE){
       redirect('login/login_form');
       } else {
       $user = $this->session->userdata('username');
       }
-
   }
 
 
-function index($id=NULL){
+  function index($id=NULL)
+  {
+    $jmlpage = $this->db->get('barang');
+    //pengaturan pagination
+    $config['base_url'] = base_url().'dashboard/index';
+    $config['total_rows'] = $jmlpage->num_rows();
+    $config['per_page'] = '25';
+    $config['first_page'] = 'First';
+    $config['last_page'] = 'Last';
+    $config['next_page'] = '&laquo;';
+    $config['prev_page'] = '&raquo;';
 
-  $jmlpage = $this->db->get('barang');
-  //pengaturan pagination
-             $config['base_url'] = base_url().'dashboard/index';
-             $config['total_rows'] = $jmlpage->num_rows();
-             $config['per_page'] = '25';
-             $config['first_page'] = 'First';
-             $config['last_page'] = 'Last';
-             $config['next_page'] = '&laquo;';
-             $config['prev_page'] = '&raquo;';
-
-             $this->pagination->initialize($config);
-             $data['page'] = $this->pagination->create_links();
-             $data['barang'] = $this->m_gudang->listBarang();
-             $data['lokasi'] = $this->m_gudang->getLokasi();
-             $data['kondisi'] = $this->m_gudang->getKondisi();
-             $data['merk'] = $this->m_gudang->loadMerk();
-             $data['sumberdana'] = $this->m_gudang->getSumberDana();
-
-             
-             $this->load->view('css/header');
-             $this->load->view('dashboard/topnav',$data);
-             $this->load->view('dashboard/adminmenu');
-             $this->load->view('dashboard/main');
-             $this->load->view('css/js');
-             $this->load->view('css/logic_date');
-             $this->load->view('css/footer');
-
-}
+    $this->pagination->initialize($config);
+    $data['page'] = $this->pagination->create_links();
+    $data['barang'] = $this->m_gudang->listBarang();
+    $data['lokasi'] = $this->m_gudang->getLokasi();
+    $data['kondisi'] = $this->m_gudang->getKondisi();
+    $data['merk'] = $this->m_gudang->loadMerk();
+    $data['sumberdana'] = $this->m_gudang->getSumberDana();
 
 
-  function tambahbarang(){
-    $this->m_gudang->addBarang();
-    $command = escapeshellcmd('C:/xampp/htdocs/inventory/assets/data/pin_word_sd.py');
-    $output = shell_exec($command);
-    echo $command;
-    redirect('dashboard');
+    $this->load->view('css/header');
+    $this->load->view('dashboard/topnav',$data);
+    $this->load->view('dashboard/adminmenu');
+    $this->load->view('dashboard/main');
+    $this->load->view('css/js');
+    $this->load->view('css/logic_date');
+    $this->load->view('css/footer');
   }
 
-  function deletebarang($id){
+
+  function tambahbarang()
+  {
+      $this->m_gudang->addBarang();
+      $command = escapeshellcmd('C:/xampp/htdocs/inventory/assets/data/pin_word_sd.py');
+      $output = shell_exec($command);
+      echo $command;
+      redirect('dashboard');
+  }
+
+  function deletebarang($id)
+  {
     $this->m_gudang->hapusBarang($id);
     unlink('C:/xampp/htdocs/inventory/assets/data/'.$id.'.doc');
     //echo 'D:/BARBARIKA/xampp/htdocs/inventory/assets/data/'.$id.'.docx';
@@ -66,57 +67,59 @@ function index($id=NULL){
 
 /*--------------SUMBERDANA---------------*/
 
-public function sumberdana(){
-            $data['sumber'] = $this->m_gudang->getSumberdana();
-             $this->load->view('css/header');
-             $this->load->view('dashboard/topnav',$data);
-             $this->load->view('dashboard/adminmenu');
-             $this->load->view('dashboard/sumber');
-             $this->load->view('css/js');
-             //$this->load->view('css/store_process');
-             $this->load->view('css/footer');
+  public function sumberdana()
+  {
+    $data['sumber'] = $this->m_gudang->getSumberdana();
+    $this->load->view('css/header');
+    $this->load->view('dashboard/topnav',$data);
+    $this->load->view('dashboard/adminmenu');
+    $this->load->view('dashboard/sumber');
+    $this->load->view('css/js');
+    //$this->load->view('css/store_process');
+    $this->load->view('css/footer');
+  }
 
-}
-
-  function deletesumber($id = null){
+  function deletesumber($id = null)
+  {
     $this->m_gudang->deleteSumber($id);
     redirect('dashboard/sumberdana');
-}
+  }
 
-  function tambahsumber(){
-     $this->m_gudang->addSumber();
+  function tambahsumber()
+  {
+    $this->m_gudang->addSumber();
     redirect('dashboard/sumberdana');
   }
 /*----------*/
 
 
 /*-------------LOKASI---------------*/
-public function lokasi(){
-  $data['lokasi'] = $this->m_gudang->loadLokasi();
+  public function lokasi(){
+    $data['lokasi'] = $this->m_gudang->loadLokasi();
 
-             $this->load->view('css/header');
-             $this->load->view('dashboard/topnav',$data);
-             $this->load->view('dashboard/adminmenu');
-             $this->load->view('dashboard/lokasi');
-             $this->load->view('css/js');
-             $this->load->view('css/footer');
-}
+    $this->load->view('css/header');
+    $this->load->view('dashboard/topnav',$data);
+    $this->load->view('dashboard/adminmenu');
+    $this->load->view('dashboard/lokasi');
+    $this->load->view('css/js');
+    $this->load->view('css/footer');
+  }
 
   function tambahlokasi(){
     $this->m_gudang->addLokasi();
     redirect('dashboard/lokasi');
   }
 
-  /*--------------MERK-----------------*/
-public function merk(){
-  $data['merk'] = $this->m_gudang->loadMerk();
-             $this->load->view('css/header');
-             $this->load->view('dashboard/topnav',$data);
-             $this->load->view('dashboard/adminmenu');
-             $this->load->view('dashboard/merk');
-             $this->load->view('css/js');
-             $this->load->view('css/footer');
-           }
+/*--------------MERK-----------------*/
+  public function merk(){
+    $data['merk'] = $this->m_gudang->loadMerk();
+    $this->load->view('css/header');
+    $this->load->view('dashboard/topnav',$data);
+    $this->load->view('dashboard/adminmenu');
+    $this->load->view('dashboard/merk');
+    $this->load->view('css/js');
+    $this->load->view('css/footer');
+  }    
 
   function tambahmerk(){
     $this->m_gudang->addMerk();
@@ -126,43 +129,63 @@ public function merk(){
 
   function download($id){
     redirect('dashboard');
-}
+  }
 
 /*-----------------USER------------------------------------------------------*/
 
-public function user(){
-			 $data['user_list'] = $this->m_gudang->loadUser(); 
-			 $this->load->view('css/header');
-             $this->load->view('dashboard/topnav');
-             $this->load->view('dashboard/adminmenu');
-             $this->load->view('dashboard/userlist',$data);
-             $this->load->view('css/js');
-             $this->load->view('css/footer');
-           }
+  public function user(){
+    $data['user_list'] = $this->m_gudang->loadUser(); 
+    $this->load->view('css/header');
+    $this->load->view('dashboard/topnav');
+    $this->load->view('dashboard/adminmenu');
+    $this->load->view('dashboard/userlist',$data);
+    $this->load->view('css/js');
+    $this->load->view('css/footer');
+  }
 		   
 		   
-	function tambahuser(){
-	$this->m_gudang->addUser();
-	redirect('dashboard/user');
-	}
-
-
+  function tambahuser(){
+    $this->m_gudang->addUser();
+    redirect('dashboard/user');
+  }
 
   public function check_username_availablity(){
-      $get_result = $this->m_gudang->check_username_availablity();
-  
-        if(!$get_result )
-            echo '<span style="color:#f00">Username already in use.</span>';
-        else
-            echo '<span style="color:#00c">Username Available</span>';
-    }
+    $get_result = $this->m_gudang->check_username_availablity();
+
+    if(!$get_result )
+      echo '<span style="color:#f00">Username already in use.</span>';
+    else
+      echo '<span style="color:#00c">Username Available</span>';
+  }
 
   public function deleteuser($id = null){
-  $this->m_gudang->hapusUser($id);
-  redirect('dashboard/user');
+    $this->m_gudang->hapusUser($id);
+    redirect('dashboard/user');
+  }
+
+  //-----------------------Cetak Inventaris---------------
+  public function cetak()
+  {
+      $data['data'] = $this->m_gudang->get_all_ruangan();
+
+      $this->load->view('css/header');
+      $this->load->view('dashboard/topnav');
+      $this->load->view('dashboard/adminmenu');
+      $this->load->view('dashboard/cetak', $data);
+      $this->load->view('css/js');
+      $this->load->view('css/footer');
+  }
+
+  function downPDF()
+  {
+      $id_tempat = (int)$this->input->post()['ruangan'];
+      $data['data'] = $this->m_gudang->get_barang_by_tempat($id_tempat);
+      $data['ruangan'] = $this->m_gudang->get_ruangan($id_tempat);
+      $html = $this->load->view('test',$data,true);
+      $dompdf = new DOMPDF();
+      $dompdf->load_html($html);
+      $dompdf->render();
+      $dompdf->stream($data['ruangan'][0]->NAMALOKASI.'.pdf');
   }
 
 }
-
-
-?>
