@@ -20,7 +20,7 @@
 
       <?php 
       $data = array('id' => 'login-form', 'class'=>'login-form');
-      echo form_open('login_con/login_form',$data); ?>
+      echo form_open('login/login_form',$data); ?>
 
 		 <div class="row">
 		 <div class="form-group col-md-10">

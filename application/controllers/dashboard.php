@@ -19,13 +19,6 @@ class Dashboard extends CI_Controller /* Konsruktor*/
 
 function index($id=NULL){
 
-/*if($this->session->userdata('isLogin') == FALSE){
-  redirect('login/login_form');
-} else {
-  $user = $this->session->userdata('username');
-  }*/
-
-
   $jmlpage = $this->db->get('barang');
   //pengaturan pagination
              $config['base_url'] = base_url().'dashboard/index';
