@@ -10,18 +10,18 @@
 
     <!--START CONTENT-->
     <div class="content">  
-		<div class="page-title">	
-			<h3>User Panel</h3>
-		</div>
-		<!--START TABLE-->
-		<div class="row">
+    <div class="page-title">  
+      <h3>User Panel</h3>
+    </div>
+    <!--START TABLE-->
+    <div class="row">
                     <div class="col-md-12">
                         <div class="grid simple ">
                             <div class="grid-title no-border">
                                 <h4><span class="semi-bold">Panel </span>User</h4>
-                                <div class="tools">	<a href="javascript:;" class="collapse"></a>
-									<a href="#grid-config" data-toggle="modal" class="config"></a>
-									<a href="javascript:;" class="reload"></a>
+                                <div class="tools"> <a href="javascript:;" class="collapse"></a>
+                  <a href="#grid-config" data-toggle="modal" class="config"></a>
+                  <a href="javascript:;" class="reload"></a>
                                 </div>
                             </div>
                             <div class="grid-body no-border">
@@ -34,7 +34,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-										<?php
+                    <?php
                                                 if(empty($user_list)){
                                                   echo "<tr><td colspan=\"6\">Data tidak tersedia</td></tr>";
                                                 }else{

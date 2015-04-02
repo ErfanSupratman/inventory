@@ -31,7 +31,7 @@
 													</div> 
                                                 <th style="width:20%">KODE SUMBER</th>
                                                 <th style="width:75%">NAMA SUMBER DANA</th>
-                                                <th style="width:5%">OPERASI</th>
+                                                <!--<th style="width:5%">OPERASI</th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -40,13 +40,13 @@
                                             <tr>
                                               <td><?php echo $sum->KODESUMBER?></td>
                                               <td><?php echo $sum->NAMASUMBER?></td>
-                                              <td><button class="btn btn-mini btn-success dropdown-toggle btn-demo-space" data-toggle="dropdown">
+                                              <!--<td><button class="btn btn-mini btn-success dropdown-toggle btn-demo-space" data-toggle="dropdown">
                                                   <span class="caret"></span></button>
                                                   <ul class="dropdown-menu">
                                                       <li><a href="#upCet" class="ambil" data-toggle="modal" data-id="<?php //echo $site->siteId;?>">Update</a></li>
                                                       <li><a href="<?php //echo base_url(); ?>dashboard/deletesumber/<?php //echo $sum->IDSUMBER;?>">Hapus</a></li>
                                                   </ul>
-                                              </td>
+                                              </td>-->
                                             </tr>
                                            <?php }?>
                                         </tbody>

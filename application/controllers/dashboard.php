@@ -110,6 +110,20 @@ class Dashboard extends CI_Controller /* Konsruktor*/
     redirect('dashboard/lokasi');
   }
 
+    function selectlokasi($id){
+    $data['lokasi'] = $this->m_gudang->lokasiSelect($id);
+    $this->load->view('css/header');
+    $this->load->view('dashboard/topnav');
+    $this->load->view('dashboard/adminmenu');
+    $this->load->view('dashboard/userlokasi',$data);
+    $this->load->view('css/js');
+    $this->load->view('css/footer');
+  }
+  function updatelokasi($id){
+    $this->m_gudang->editLokasi($id);
+    redirect('dashboard/lokasi');
+  }
+
 /*--------------MERK-----------------*/
   public function merk(){
     $data['merk'] = $this->m_gudang->loadMerk();
@@ -142,7 +156,6 @@ class Dashboard extends CI_Controller /* Konsruktor*/
     $this->load->view('css/js');
     $this->load->view('css/footer');
   }
-		   
 		   
   function tambahuser(){
     $this->m_gudang->addUser();
