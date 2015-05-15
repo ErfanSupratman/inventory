@@ -35,6 +35,7 @@
                                                 <th style="width:5%">LANTAI</th>
                                                 <th style="width:5%">Penanggung Jawab</th>
                                                 <th style="width:5%">NIP PJ</th>
+                                                <th style="width:5%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -46,6 +47,7 @@
                                               <td><?php echo $lok->LANTAILOKASI?></td>
                                               <td><?php echo $lok->PJ?></td>
                                               <td><?php echo $lok->NIP_PJ?></td>
+                                              <td><a href="<?php echo base_url(); ?>dashboard/selectlokasi/<?php echo $lok->IDLOKASI;?>"><span><i class="fa fa-pencil fa-fw"></i></span></a></td>
                                             </tr>
                                             <?php }?>
                                         </tbody>

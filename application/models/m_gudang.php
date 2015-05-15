@@ -26,7 +26,7 @@ class M_gudang extends CI_Model
 		$barangharga = $_POST['hargabarang'];
 		$datein = $_POST['tanggalmasuk'];
 		$newdatein = date('Y-m-d', strtotime($datein));
-                $datespj = $_POST['tanggalspj'];
+              $datespj = $_POST['tanggalspj'];
                 $newdatespj = date('Y-m-d', strtotime($datespj));
 		$location = $_POST['lokasibarang'];
 		$condition = $_POST['kondisibarang'];
@@ -58,6 +58,10 @@ class M_gudang extends CI_Model
         return $result;
 	}
 
+	function lokasiSelect($id){
+		$query=$this->db->query("SELECT * FROM lokasi WHERE idlokasi = '$id'");
+		return $query->result();
+	}
 
 	function getSumberDana(){
 		$query=$this->db->query("SELECT * FROM sumber");
@@ -89,6 +93,28 @@ class M_gudang extends CI_Model
 			VALUES ('$lokasicode', '$lokasiname', '$lokasifloor', '$PJ', '$NIP_PJ')");
 
 	}
+
+	function editLokasi($id){
+		$data = array(
+               'KODELOKASI' => $_POST['kodelokasi'],
+               'NAMALOKASI' => $_POST['namalokasi'],
+               'LANTAILOKASI' => $_POST['lantai'],
+               'PJ' => $_POST['PJ'],
+               'NIP_PJ' => $_POST['NIP_PJ']
+            );
+
+		$this->db->where('IDLOKASI', $id);
+		$this->db->update('lokasi', $data); 
+	}
+
+	function updPwd(){
+		$data = array(
+			'PASSWORD' => $_POST['password']);
+
+		$this->db->where('USERID', $id);
+		$this->db->update('user', $data);
+	}
+
 
 	function loadMerk(){
 		$query=$this->db->query("SELECT * FROM merk");
