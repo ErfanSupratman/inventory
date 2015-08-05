@@ -38,6 +38,10 @@ class M_gudang extends CI_Model
 		return $query;
   	}
 
+  	function editBarang($id){
+
+  	}
+  	
   	function hapusBarang($id){
   		$this->db->query("DELETE FROM barang WHERE idbarang = $id");
   	}

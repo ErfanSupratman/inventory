@@ -7,7 +7,6 @@ class Login extends CI_Controller
     parent::__construct();
     
     $this->load->model('m_login');
-    $this->load->database();
     
   }
   
@@ -15,14 +14,15 @@ class Login extends CI_Controller
   function index()
   {
     $session = $this->session->userdata('isLogin');
-    
       if($session == FALSE)
       {
         redirect('login/login_form');
-      }elseif($session == TRUE)
+      }
+      elseif($session == TRUE)
       {
         redirect('dashboard');
-      }else
+      }
+      else
       redirect('login/logout');
   }
   

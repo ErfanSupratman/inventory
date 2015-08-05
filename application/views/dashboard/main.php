@@ -62,7 +62,7 @@
                                               <td class="text-center"><?php echo $ca->TIPEBARANG?></td>
                                               <td class="text-center"><?php echo $ca->NAMASUMBER?></td>
                                               <td class="text-center"><?php echo $ca->NAMALOKASI?></td>
-                                              <td><a href="<?php echo base_url().'assets/data/'.$ca->IDBARANG.'.doc';?>">Download</a> | <a href="<?php echo site_url('dashboard/deletebarang').'/'.$ca->IDBARANG;?>">Delete</a></td> 
+                                              <td><a href="<?php echo base_url().'assets/data/'.$ca->IDBARANG.'.doc';?>">Download</a> | <a href="#">Edit</a> | <a href="<?php echo site_url('dashboard/deletebarang').'/'.$ca->IDBARANG;?>">Delete</a></td> 
                                             </tr>
                                            <?php $no++;}}?>
                                                 </tbody>
