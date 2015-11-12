@@ -25,7 +25,7 @@
                             </div>
                             <div class="grid-body no-border">
                             <button type="button" class="btn btn-primary btn-cons" data-target="#addSite" data-toggle="modal"><i class="fa fa-check"></i>&nbsp;TAMBAH SUMBER DANA</button>
-                                    <table class="table no-more-tables">
+                                    <table id="table2" class="table no-more-tables">
                                         <thead>
                                             <tr>
 													</div> 
@@ -97,3 +97,8 @@
   </div>
  </div>
 <!-- END CONTAINER --> 
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#table2').DataTable();
+});
+</script>

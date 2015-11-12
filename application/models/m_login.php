@@ -13,33 +13,28 @@ class M_login extends CI_Model
 
   }*/
 
-  function getLogin(){
-    $this->db->select('*');
-    $this->db->from('users');
-    $this->db->where('NAMAUSER', $username);
-
-    return $query->result();
-
-  }
-
   function ambilPengguna($username, $password)
   {
     $this->db->select('*');
-    $this->db->from('users');
-    $this->db->where('NAMAUSER', $username);
-    $this->db->where('PASSUSER', $password);
+    $this->db->from('user');
+    $this->db->where('USERNAME', $username);
+    $this->db->where('PASSWORD', $password);
+    $this->db->where('ROLE', 0);
     $query = $this->db->get();
     
-    return $query->num_rows();
+    return $query->result();
   }
-  
-  function dataPengguna($username)
+  function ambilPeje($username, $password)
   {
-   $this->db->select('NAMAUSER');
-   $this->db->where('NAMAUSER', $username);
-   $query = $this->db->get('users');
-   
-   return $query->row();
+
+    $this->db->select('*');
+    $this->db->from('user');
+    $this->db->where('USERNAME', $username);
+    $this->db->where('PASSWORD', $password);
+    $this->db->where('ROLE', 1);
+    $query = $this->db->get();
+    
+    return $query->result();
   }
   
 }  

@@ -15,7 +15,7 @@
 		</div>
 		<!--START TABLE-->
     <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-14">
                                 <div class="grid simple ">
                                     <div class="grid-title no-border">
                                             <h4><span class="semi-bold"></span></h4>
@@ -26,7 +26,7 @@
                                     <div class="grid-body no-border">
                                              <button type="button" class="btn btn-primary btn-cons" data-target="#myCatt" data-toggle="modal"><i class="fa fa-check"></i>&nbsp;TAMBAH BARANG</button>
                                              <br>
-                                             <table class="table no-more-tables">
+                                             <table id="table1" class="table no-more-tables">
                                                 <thead>
                                                     <tr>
                                                         <th class="text-center" style="width:15%">Nama Barang</th>
@@ -37,10 +37,10 @@
                                                         <th class="text-center" style="width:5%">Tanggal SPJ</th>
                                                         <th class="text-center" style="width:3%">Kondisi</th>
                                                         <th class="text-center" style="width:5%">Merk</th>
-                                                        <th class="text-center" style="width:5%">Type</th>
+                                                        <!-- <th class="text-center" style="width:5%">Type</th> -->
                                                         <th class="text-center" style="width:5%">Sumber Dana</th>
                                                         <th class="text-center" style="width:5%">Lokasi</th>
-                                                        <th class="text-center" style="width:5%">Opt.</th>
+                                                        <th class="text-center" style="width:5%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -52,21 +52,22 @@
                                             foreach($barang as $ca){ ?>
                                             <tr>
                                               <td class="text-center"><?php echo $ca->NAMABARANG?></td>
-                                              <td class="text-center"><?php echo $ca->KODEBARANG?></td>
+                                              <td class="text-center"><?php echo $ca->KODE?></td>
                                               <td class="text-center"><?php echo $ca->JUMLAHBARANG?></td>
                                               <td class="text-center"><?php echo $ca->HARGABARANG?></td>
                                               <td class="text-center"><?php echo $ca->TANGGALMASUK?></td>
                                               <td class="text-center"><?php echo $ca->TANGGALSPJ?></td>
                                               <td class="text-center"><?php echo $ca->NAMAKONDISI?></td>
                                               <td class="text-center"><?php echo $ca->MERKBARANG?></td>
-                                              <td class="text-center"><?php echo $ca->TIPEBARANG?></td>
+                                              <!-- <td class="text-center"><?php echo $ca->TIPEBARANG?></td> -->
                                               <td class="text-center"><?php echo $ca->NAMASUMBER?></td>
                                               <td class="text-center"><?php echo $ca->NAMALOKASI?></td>
-                                              <td><a href="<?php echo base_url().'assets/data/'.$ca->IDBARANG.'.doc';?>">Download</a> | <a href="#">Edit</a> | <a href="<?php echo site_url('dashboard/deletebarang').'/'.$ca->IDBARANG;?>">Delete</a></td> 
+                                              <td><a onclick="javascript:window.location.reload()" href="<?php echo base_url().'assets/data/'.$ca->IDBARANG.'.doc';?>">Download</a> | <a href="<?php echo base_url(); ?>dashboard/selectbarang/<?php echo $ca->IDBARANG;?>" data-target="#myEdit" data-toggle="modal">Edit</a> | <a href="<?php echo site_url('dashboard/deletebarang').'/'.$ca->IDBARANG;?>">Hapus</a></td> 
                                             </tr>
                                            <?php $no++;}}?>
                                                 </tbody>
-                                             </table><div class="halaman">Halaman : <?php echo $page;?></div>
+                                             </table>
+                                             <!-- <div class="halaman">Halaman : <?php echo $page;?></div> -->
 
                                              </div>
                                         </div>
@@ -74,7 +75,7 @@
                                 </div>
 
     </div>
-
+    <!-- tambah barang MODALS -->
     <div class="modal fade" id="myCatt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
@@ -94,7 +95,11 @@
                           </div>
 
                           <div class="col-md-12">
-                              <input type="text" class="form-control col-md-6" placeholder="Kode Barang" name="kodebarang">
+                              <select id="idkode" style="width:100%" name="idkode">
+                                <?php
+                                    foreach($kodebarang as $each){ ?>
+                                    <option value="<?= $each['IDKODE'] ?>"><?= $each['KODE'] ?> <?= $each['NAMAKODE'] ?></option>
+                              <?php }?>
                           </div>
 
                           <div class="col-md-4">
@@ -102,9 +107,10 @@
                           </div>
 
                           <div class="col-md-8">
-                              <input type="text" class="form-control col-md-6" placeholder="Harga Barang dalam Rupiah" name="hargabarang">
-                          </div>
+                              <input id="idharga" type="text"  name="hargabarang" class="number">
 
+                          </div>
+                          
                           <div class="col-md-6">
                         <label>Tanggal Masuk:</label>
                         <div class="input-append success date col-md-12 col-lg-8 no-padding">
@@ -162,6 +168,10 @@
                                 <?php }?>
                               </select>
                             </div>
+                            <div class="col-md-12">
+                              <label>Spesifikasi Barang</label>
+                              <textarea id="txtArea" name="spekbarang" rows="10" cols="70"></textarea>
+                            </div>
                           </div>
                           <div class="row form-row"></div>
                         </div>
@@ -175,8 +185,50 @@
                     <!-- /.modal-dialog -->
                   </div> <!-- ENDS MODALS -->
 
+ <!-- ubah barang MODALS -->                 
+ <div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" onclick="javascript:window.location.reload()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                          <br>
+                          <i class="icon-credit-card icon-7x"></i>
+                          <h4 id="myModalLabel" class="semi-bold">Ubah Barang</h4>
+                          <p class="no-margin">Formulir perubahan barang</p>
+                          <br>
+                        </div>
+                        <div class="modal-body">
+                        <div class="col-md-6">
+                        <label>Tanggal Masuk:</label>
+                        <div class="input-append success date col-md-12 col-lg-8 no-padding">
+                          <input id="tgl" type="text" class="form-control" name="tanggalmasuk">
+                            <span class="add-on"><span class="arrow"></span><i class="fa fa-th"></i></span> 
+                        </div></div>
+                              
+                        <div class="col-md-6">
+                        <label>Tanggal SPJ:</label>
+                        <div class="input-append success date col-md-12 col-lg-8 no-padding">
+                          <input id="tgl1" type="text" class="form-control" name="tanggalspj">
+                            <span class="add-on"><span class="arrow"></span><i class="fa fa-th"></i></span> 
+                        </div></div>
+                        </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div> <!-- ENDS MODALS -->
 
 </div>
 </div>
 </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#tgl').datepicker();
+    $('#tgl1').datepicker();
+    $('#idharga').mask('000 000 000 000 000,00', {reverse: true});
+    $('#table1').DataTable();
+  });
+
+</script>
+ 

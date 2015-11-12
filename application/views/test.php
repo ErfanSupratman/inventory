@@ -153,19 +153,27 @@
 			<tr>
 				<td><br/>
 					Petugas Inventaris Jurusan<br/><br/><br/><br/><br/><br/>
-					<b><u>Murdiono</u></b><br/>
-					<b><u>NIP. 198110126 200501 1 003</u></b>
+					<?php foreach ($petugas as $pet) {?>
+						<b><u><?php echo $pet->NAMAUSER;?></u></b><br/>
+						<b><u>NIP. <?php echo $pet->NIPUSER;?></u></b>
+					<?php
+					}
+					?>
 				</td>
 				<td>
 					<br/>
 					Penanggung Jawab Ruangan<br/><br/><br/><br/><br/><br/>
-					<b><u><?php echo $ruangan[0]->PJ; ?></u></b><br/>
-					<b><u>NIP. <?php echo $ruangan[0]->NIP_PJ;?></u></b>
+					<b><u><?php echo $ruangan[0]->NAMAUSER; ?></u></b><br/>
+					<b><u>NIP. <?php echo $ruangan[0]->NIPUSER;?></u></b>
 				</td><td>
 					Mengetahui<br/>
 					SekJur. Teknik Informatika<br/><br/><br/><br/><br/><br/>
-					<b><u>Dwi Sunaryono, S.Kom., M.Kom.</u></b><br/>
-					<b><u>NIP. 19720528 199702 1 001</u></b>
+					<?php foreach ($sekjur as $pet) {?>
+						<b><u><?php echo $pet->NAMAUSER;?></u></b><br/>
+						<b><u>NIP. <?php echo $pet->NIPUSER;?></u></b>
+					<?php
+					}
+					?>
 				</td>
 			</tr>
 		</table>

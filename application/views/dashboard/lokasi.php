@@ -26,7 +26,7 @@
                             </div>
                             <div class="grid-body no-border">
                             <button type="button" class="btn btn-primary btn-cons" data-target="#addLokasi" data-toggle="modal"><i class="fa fa-check"></i>&nbsp;TAMBAH LOKASI</button>
-                                    <table class="table no-more-tables">
+                                    <table id="tablelokasi" class="table no-more-tables">
                                         <thead>
                                             <tr>
 													</div> 
@@ -45,9 +45,9 @@
                                               <td><?php echo $lok->KODELOKASI?></td>
                                               <td><?php echo $lok->NAMALOKASI?></td>
                                               <td><?php echo $lok->LANTAILOKASI?></td>
-                                              <td><?php echo $lok->PJ?></td>
-                                              <td><?php echo $lok->NIP_PJ?></td>
-                                              <td><a href="<?php echo base_url(); ?>dashboard/selectlokasi/<?php echo $lok->IDLOKASI;?>"><span><i class="fa fa-pencil fa-fw"></i></span></a></td>
+                                              <td><?php echo $lok->NAMAUSER?></td>
+                                              <td><?php echo $lok->NIPUSER?></td>
+                                              <td><a href="<?php echo base_url(); ?>dashboard/selectlokasi/<?php echo $lok->IDLOKASI;?>" data-target="#editLokasi" data-toggle="modal" >Edit</a> | <a href="<?php echo base_url(); ?>dashboard/deletelokasi/<?php echo $lok->IDLOKASI;?>">Delete</a> </td>
                                             </tr>
                                             <?php }?>
                                         </tbody>
@@ -68,7 +68,7 @@
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                          <button onclick="javascript:window.location.reload()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                           <br>
                           <i class="icon-credit-card icon-7x"></i>
                           <h4 id="myModalLabel" class="semi-bold">Tambah Lokasi</h4>
@@ -79,10 +79,16 @@
                         <form action="<?php echo base_url();?>dashboard/tambahlokasi" method="POST" name="addlokasi" id="addlokasi">
                           <div class="row form-row">
                             <div class="col-md-12">
-                              <input type="text" class="form-control col-md-6" placeholder="Kode Lokasi" name="kodelokasi">
+                              <input type="text" class="form-control col-md-6" placeholder="Kode Lokasi" name="kodelokasi" id="kodeId" value="" >
+                              <!-- <div id="Info"></div></span><span id="Loading"><img src="<?php echo base_url(); ?>assets/img/loading.gif" alt=""/></span>   -->
                               <input type="text" class="form-control" placeholder="Nama Lokasi" name="namalokasi">
-                              <input type="text" class="form-control" placeholder="Penanggung Jawab" name="PJ">
-                              <input type="text" class="form-control" placeholder="NIP Penanggung Jawab" name="NIP_PJ">
+                              <select id="Penanggung Jawab" style="width:100%" name="PJ">
+                              <?php
+                                  foreach($peje as $pj){?> 
+                                  <option value="<?php echo $pj->IDUSER?>"><?php echo $pj->NAMAUSER?></option>
+                                  <?php
+                                  }?>
+                                  </select>
                               <select id="lantai" style="width:100%" name="lantai">
                                 <option value="1"> Lantai 1</option>
                                 <option value="2"> Lantai 2</option>
@@ -92,8 +98,8 @@
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                          <button type="submit" class="btn btn-primary" name="addlokasi" id="addlokasi" value="addlokasi">Simpan</button>
+                          <button onclick="javascript:window.location.reload()" type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                          <button type="submit" onclick="return check_kodelokasi();" class="btn btn-primary" name="addlokasibtn" id="addlokasibtn" value="addlokasi">Simpan</button>
                         </div>
                         </form>
                       </div>
@@ -101,7 +107,30 @@
                     </div>
                     <!-- /.modal-dialog -->
                   </div> <!-- ENDS MODALS -->
+ <div class="modal fade" id="editLokasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" onclick="javascript:window.location.reload()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                          <br>
+                          <i class="icon-credit-card icon-7x"></i>
+                          <h4 id="myModalLabel" class="semi-bold">Ubah Lokasi</h4>
+                          <p class="no-margin">Mengubah Lokasi</p>
+                          <br>
+                        </div>
+                        <div class="modal-body">
 
+                        </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div> <!-- ENDS MODALS -->
   </div>
  </div>
+
 <!-- END CONTAINER --> 
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#tablelokasi').DataTable();
+});
+</script>

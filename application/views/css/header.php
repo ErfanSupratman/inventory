@@ -26,6 +26,7 @@
 <link href="<?php echo base_url(); ?>assets/plugins/boostrap-checkbox/css/bootstrap-checkbox.css" rel="stylesheet" type="text/css" media="screen"/>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/ios-switch/ios7-switch.css" type="text/css" media="screen">
 <link href="<?php echo base_url(); ?>assets/plugins/jquery-slider/css/jquery.sidr.light.css" rel="stylesheet" type="text/css" media="screen"/>
+<link href="<?php echo base_url(); ?>assets/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
 <!-- END PLUGIN CSS -->
 
 
@@ -33,34 +34,12 @@
 .datepicker{z-index:1151;}
 </style>
 
-<script src="<?php echo base_url(); ?>assets/plugins/jquery-1.8.3.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-		$(document).ready(function() {
-  		$('#Loading').hide();    
-			});
-
-		function check_username(){
-
-  		var userId = $("#userId").val();
-  			if(userId.length > 2){
-    		$('#Loading').show();
-    		$.post("<?php echo base_url(); ?>dashboard/check_username_availablity", {
-      			userId: $('#userId').val(),
-    			}, function(response){
-      		$('#Info').fadeOut();
-       		$('#Loading').hide();
-      	setTimeout("finishAjax('Info', '"+escape(response)+"')", 450);
-    		});
-    	return false;
-  		}
-	}
-
-function finishAjax(id, response){
- 
-  $('#'+id).html(unescape(response));
-  $('#'+id).fadeIn(1000);
-} 
-</script> 
+<script src="<?php echo base_url(); ?>assets/plugins/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery.mask.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
 <!-- END CSS TEMPLATE -->
 </head>
 <!-- END HEAD -->

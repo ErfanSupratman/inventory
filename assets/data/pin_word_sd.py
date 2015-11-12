@@ -21,10 +21,11 @@ for idbarang in daftar_barang:
 	#nama_file		= nama_file.replace("/", "")
 	#nama_lokasi	= db.escape_string(nama_lokasi)
 	sql = '''
-		SELECT barang.`NAMABARANG`, barang.`KODEBARANG`, barang.`JUMLAHBARANG`, barang.`HARGABARANG`,barang.`TANGGALMASUK`, barang.`MERKBARANG`, kondisi.`NAMAKONDISI`, sumber.`NAMASUMBER`, lokasi.`NAMALOKASI` 
+		SELECT barang.`NAMABARANG`, kodebarang.`KODE`, barang.`JUMLAHBARANG`, barang.`HARGABARANG`,barang.`TANGGALMASUK`, barang.`MERKBARANG`, kondisi.`NAMAKONDISI`, sumber.`NAMASUMBER`, lokasi.`NAMALOKASI` 
 		FROM barang INNER JOIN kondisi ON kondisi.`IDKONDISI` = barang.`IDKONDISI` 
 		INNER JOIN sumber ON sumber.`IDSUMBER` = barang.`IDSUMBER` 
-		INNER JOIN lokasi ON lokasi.`IDLOKASI` = barang.`IDLOKASI` WHERE barang.IDBARANG =''' + str(nama_barang) +  " GROUP BY barang.`IDBARANG`"
+		INNER JOIN lokasi ON lokasi.`IDLOKASI` = barang.`IDLOKASI` 
+		INNER JOIN kodebarang ON kodebarang.`IDKODE` = barang.`IDKODE` WHERE barang.IDBARANG =''' + str(nama_barang) +  " GROUP BY barang.`IDBARANG`"
 	#print sql
 	cur.execute(sql)
 

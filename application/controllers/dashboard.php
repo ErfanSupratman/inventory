@@ -10,9 +10,16 @@ class Dashboard extends CI_Controller /* Konsruktor*/
       require_once(realpath(APPPATH."third_party/dompdf")."/dompdf_config.inc.php");
       spl_autoload_register('DOMPDF_autoload');
       if($this->session->userdata('isLogin') == FALSE){
-      redirect('login/login_form');
-      } else {
-      $user = $this->session->userdata('username');
+        redirect('login/login_form');
+      } 
+      else {
+        if ($this->session->userdata('username') === 'admin') {
+          $user = $this->session->userdata('username');
+        }
+        else{
+          redirect('login/login_form');
+        }
+
       }
   }
 
@@ -33,17 +40,16 @@ class Dashboard extends CI_Controller /* Konsruktor*/
     $data['page'] = $this->pagination->create_links();
     $data['barang'] = $this->m_gudang->listBarang();
     $data['lokasi'] = $this->m_gudang->getLokasi();
+    $data['kodebarang'] = $this->m_gudang->listkodebarang();
     $data['kondisi'] = $this->m_gudang->getKondisi();
-    $data['merk'] = $this->m_gudang->loadMerk();
     $data['sumberdana'] = $this->m_gudang->getSumberDana();
+    $data['user'] = $this->session->userdata('username');
 
 
     $this->load->view('css/header');
     $this->load->view('dashboard/topnav',$data);
     $this->load->view('dashboard/adminmenu');
     $this->load->view('dashboard/main');
-    $this->load->view('css/js');
-    $this->load->view('css/logic_date');
     $this->load->view('css/footer');
   }
 
@@ -56,7 +62,27 @@ class Dashboard extends CI_Controller /* Konsruktor*/
       echo $command;
       redirect('dashboard');
   }
+  function selectbarang($id){
+    $data['updatebarang'] = $this->m_gudang->barangSelect($id);
+    $data['lokasi'] = $this->m_gudang->getLokasi();
+    $data['kondisi'] = $this->m_gudang->getKondisi();
+    $data['kodebarang'] = $this->m_gudang->kodeSelect();
+    $data['sumberdana'] = $this->m_gudang->getSumberDana();
+    $data['user'] = $this->session->userdata('username');
+    $this->load->view('dashboard/editbarang', $data);
 
+    
+
+  }
+
+  function editbarang($id){
+    $this->m_gudang->editBarang($id);
+    unlink('C:/xampp/htdocs/inventory/assets/data/'.$id.'.doc');
+    $command = escapeshellcmd('C:/xampp/htdocs/inventory/assets/data/pin_word_sd.py');
+    $output = shell_exec($command);
+    echo $command;
+    redirect('dashboard');
+  }
   function deletebarang($id)
   {
     $this->m_gudang->hapusBarang($id);
@@ -70,12 +96,11 @@ class Dashboard extends CI_Controller /* Konsruktor*/
   public function sumberdana()
   {
     $data['sumber'] = $this->m_gudang->getSumberdana();
+    $data['user'] = $this->session->userdata('username');
     $this->load->view('css/header');
     $this->load->view('dashboard/topnav',$data);
     $this->load->view('dashboard/adminmenu');
     $this->load->view('dashboard/sumber');
-    $this->load->view('css/js');
-    //$this->load->view('css/store_process');
     $this->load->view('css/footer');
   }
 
@@ -95,13 +120,14 @@ class Dashboard extends CI_Controller /* Konsruktor*/
 
 /*-------------LOKASI---------------*/
   public function lokasi(){
-    $data['lokasi'] = $this->m_gudang->loadLokasi();
-
+    $data['lokasi'] = $this->m_gudang->listLokasi();
+    $data['peje'] = $this->m_gudang->getpeje();
+    $data['user'] = $this->session->userdata('username');
     $this->load->view('css/header');
     $this->load->view('dashboard/topnav',$data);
     $this->load->view('dashboard/adminmenu');
     $this->load->view('dashboard/lokasi');
-    $this->load->view('css/js');
+    $this->load->view('css/validasi_lokasi');
     $this->load->view('css/footer');
   }
 
@@ -112,34 +138,36 @@ class Dashboard extends CI_Controller /* Konsruktor*/
 
     function selectlokasi($id){
     $data['lokasi'] = $this->m_gudang->lokasiSelect($id);
-    $this->load->view('css/header');
-    $this->load->view('dashboard/topnav');
-    $this->load->view('dashboard/adminmenu');
-    $this->load->view('dashboard/userlokasi',$data);
-    $this->load->view('css/js');
-    $this->load->view('css/footer');
+    $data['peje'] = $this->m_gudang->getpeje();
+    $this->load->view('dashboard/userlokasi', $data);
+
+  }
+  function deletelokasi($id){
+    $this->m_gudang->hapusLokasi($id);
+    redirect('dashboard/lokasi');
   }
 
   function updatelokasi($id){
     $this->m_gudang->editLokasi($id);
     redirect('dashboard/lokasi');
   }
+/*--------------PEJE-----------------*/
 
 /*--------------MERK-----------------*/
-  public function merk(){
-    $data['merk'] = $this->m_gudang->loadMerk();
-    $this->load->view('css/header');
-    $this->load->view('dashboard/topnav',$data);
-    $this->load->view('dashboard/adminmenu');
-    $this->load->view('dashboard/merk');
-    $this->load->view('css/js');
-    $this->load->view('css/footer');
-  }    
+  // public function merk(){
+  //   $data['merk'] = $this->m_gudang->loadMerk();
+  //   $this->load->view('css/header');
+  //   $this->load->view('dashboard/topnav',$data);
+  //   $this->load->view('dashboard/adminmenu');
+  //   $this->load->view('dashboard/merk');
+  //   $this->load->view('css/js');
+  //   $this->load->view('css/footer');
+  // }    
 
-  function tambahmerk(){
-    $this->m_gudang->addMerk();
-    redirect('dashboard/merk');
-  }
+  // function tambahmerk(){
+  //   $this->m_gudang->addMerk();
+  //   redirect('dashboard/merk');
+  // }
 
 
   function download($id){
@@ -149,32 +177,53 @@ class Dashboard extends CI_Controller /* Konsruktor*/
 /*-----------------USER------------------------------------------------------*/
 
   public function user(){
-    $data['user_list'] = $this->m_gudang->loadUser(); 
+    $data['petugas'] = $this->m_gudang->loadPetugas(); 
+    $data['sekjur'] = $this->m_gudang->loadSekjur();
+    $data['dosen'] = $this->m_gudang->loadDosen();
+    $data['karyawan'] = $this->m_gudang->loadKaryawan();
+    $data['user'] = $this->session->userdata('username');
+
     $this->load->view('css/header');
-    $this->load->view('dashboard/topnav');
+    $this->load->view('dashboard/topnav',$data);
     $this->load->view('dashboard/adminmenu');
-    $this->load->view('dashboard/userlist',$data);
-    $this->load->view('css/js');
+    $this->load->view('dashboard/userlist');
+    $this->load->view('css/validasi_peje');
     $this->load->view('css/footer');
   }
 		   
-  function tambahuser(){
-    $this->m_gudang->addUser();
+  function tambahpeje(){
+    $this->m_gudang->addPeje();
     redirect('dashboard/user');
   }
 
   function updatepassword(){
-    $this->m_gudang->updPwd();
+    $userid = $this->session->userdata('id');
+    $this->m_gudang->updPwd($userid);
+    redirect('dashboard');
+  }
+  function editpetugas($id){
+    $this->m_gudang->editPetugas($id);
     redirect('dashboard/user');
   }
-
+  function editsekjur($id){
+    $this->m_gudang->editSekjur($id);
+    redirect('dashboard/user');
+  }
   public function check_username_availablity(){
-    $get_result = $this->m_gudang->check_username_availablity();
+    $hasil = $this->m_gudang->check_username_availablity();
 
-    if(!$get_result )
-      echo '<span style="color:#f00">Username already in use.</span>';
-    else
-      echo '<span style="color:#00c">Username Available</span>';
+    if($hasil == 1)
+      echo 'Username sudah digunakan';
+    elseif ($hasil == 0)
+      echo 'Username tersedia';
+  }
+  public function check_kodelokasi_oke(){
+    $hasil= $this->m_gudang->check_kodelokasi();
+    
+    if($hasil == 1)
+      echo 'Kodelokasi sudah terdaftar';
+    elseif($hasil == 0)
+      echo 'Kodelokasi dapat ditambahkan';
   }
 
   public function deleteuser($id = null){
@@ -186,18 +235,20 @@ class Dashboard extends CI_Controller /* Konsruktor*/
   public function cetak()
   {
       $data['data'] = $this->m_gudang->get_all_ruangan();
+      $data['user'] = $this->session->userdata('username');
 
       $this->load->view('css/header');
-      $this->load->view('dashboard/topnav');
+      $this->load->view('dashboard/topnav', $data);
       $this->load->view('dashboard/adminmenu');
-      $this->load->view('dashboard/cetak', $data);
-      $this->load->view('css/js');
+      $this->load->view('dashboard/cetak');
       $this->load->view('css/footer');
   }
 
   function downPDF()
   {
       $id_tempat = (int)$this->input->post()['ruangan'];
+      $data['petugas'] = $this->m_gudang->loadPetugas();
+      $data['sekjur'] = $this->m_gudang->loadSekjur();
       $data['data'] = $this->m_gudang->get_barang_by_tempat($id_tempat);
       $data['ruangan'] = $this->m_gudang->get_ruangan($id_tempat);
       $html = $this->load->view('test',$data,true);
@@ -205,6 +256,44 @@ class Dashboard extends CI_Controller /* Konsruktor*/
       $dompdf->load_html($html);
       $dompdf->render();
       $dompdf->stream($data['ruangan'][0]->NAMALOKASI.'.pdf');
+  }
+  //kodebarang
+  public function kodebarang(){
+    $data['kode'] = $this->m_gudang->allkodebarang();
+    $data['user'] = $this->session->userdata('username');
+    $this->load->view('css/header');
+    $this->load->view('dashboard/topnav',$data);
+    $this->load->view('dashboard/adminmenu');
+    $this->load->view('dashboard/kodebarang');
+    $this->load->view('css/validasi_kode');
+    $this->load->view('css/footer');
+  }
+
+  function addkode(){
+    $this->m_gudang->tambahkodebarang();
+    redirect('dashboard/kodebarang');
+  }
+
+  function selectkode($id){
+  $data['kode'] = $this->m_gudang->selectkodebarang($id);
+  $this->load->view('dashboard/editkode', $data);
+
+  }
+  function deletekode($id){
+    $this->m_gudang->hapuskodebarang($id);
+    redirect('dashboard/kodebarang');
+  }
+  function checkkode(){
+    $hasil= $this->m_gudang->checkkodebarang();
+    
+    if($hasil == 1)
+      echo 'Kode sudah terdaftar';
+    elseif($hasil == 0)
+      echo 'Kode dapat ditambahkan';
+  }
+  function updatekode($id){
+    $this->m_gudang->editkodebarang($id);
+    redirect('dashboard/kodebarang');
   }
 
 }
